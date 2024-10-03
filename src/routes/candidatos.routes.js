@@ -93,46 +93,47 @@ candidatosRoutes.post("/", (req, res) => {
 
 candidatosRoutes.get("/:id", (req, res) => {
     const { id } = req.params;
-    const emocao  = candidatos.find((emotion)=> emotion.id == id)
-    if(!emocao ){
+    const candidato  = candidatos.find((politico)=> politico.id == id);
+    
+    if(!candidato ){
         return res.status(404).send({
-            message: "Emoção não encontrada!"
+            message: "Candidato não encontrado!"
         });
     }
     return res.status(200).send({
-        message: "Emoção encontrada", 
-        emocao,
+        message: "Candidato encontrado!", 
+        candidato,
     });
 });
 
 candidatosRoutes.put("/:id", (req, res) => {
     const { id } = req.params;
-    const emocao = candidatos.find((emotion) => emotion.id == id);
-    if(!emocao){
+    const candidato = candidatos.find((politico) => politico.id == id);
+    if(!candidato){
         return res.status(404).send({
             message: "Emoção não encontrada!"
         });
     }
     const { nome, cor } = req.body;
-    emocao.nome = nome;
-    emocao.cor = cor;
+    candidato.nome = nome;
+    candidato.cor = cor;
     return res.status(200).send({
         message: "Emoção atualizada!",
-        emocao,
+        candidato,
     });
 });
 candidatosRoutes.delete("/:id", (req, res) => {
     const { id } = req.params;
-    const emocao = candidatos.find((emotion) => emotion.id == id);
-    if(!emocao){
+    const candidato = candidatos.find((politico) => politico.id == id);
+    if(!candidato){
         return res.status(404).send({
             message: "Emoção não encontrada!"
         });
     }
-    candidatos = candidatos.filter((emotion) => emotion.id != id);
+    candidatos = candidatos.filter((politico) => politico.id != id);
     return res.status(200).send({
         message: "Emoção deletada!",
-        emocao,
+        candidato,
     });
 });
 export default candidatosRoutes;
