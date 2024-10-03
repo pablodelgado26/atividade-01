@@ -4,7 +4,7 @@ const candidatosRoutes = Router()
 
 let candidatos = [
     {
-        id: Math.random() * 1000000,
+        id: Math.floor(Math.random() * 1000000),
         nome: "Gabriel Barbosa",
         partido: "FLA",
         idade: 24,
@@ -16,7 +16,7 @@ let candidatos = [
         ],
     },
     {
-        id: Math.random() * 1000000,
+        id: Math.floor(Math.random() * 1000000),
         nome: "Bruno Henrique",
         partido: "FLA",
         idade: 30,
@@ -28,7 +28,7 @@ let candidatos = [
         ],
     },
     {
-        id: Math.random() * 1000000,
+        id: Math.floor(Math.random() * 1000000),
         nome: "Arrascaeta",
         partido: "FLA",
         idade: 27,
@@ -40,7 +40,7 @@ let candidatos = [
         ],
     },
     {
-        id: Math.random() * 1000000,
+        id: Math.floor(Math.random() * 1000000),
         nome: "Pedro",
         partido: "FLA",
         idade: 24,
@@ -58,18 +58,38 @@ candidatosRoutes.get("/", (req, res) => {
     .send( candidatos ) 
 });
 
-// Rota para criar uma nova emoção
 candidatosRoutes.post("/", (req, res) => {
-    const{ nome, cor } = req.body;
-    const novaEmocao = {
-        id: candidatos.length + 1,
-        nome: nome,
-        cor: cor
+    const{ nome, partido, idade, segundo, propostas } = req.body;
+
+    //Validação de campos obrigatórios: nome, partido.
+    if(!nome || !partido){
+        return res.status(400).send({
+            message: "Nome e Partido são obrigatórios!",
+        });
     }
-    candidatos.push(novaEmocao)
-    return res.status(201)
-    .send( novaEmocao ) 
-});
+
+    // Validação de idade
+    if(idade < 18){
+        return res.status(400).send({
+            message: "Candidato menor de idade!",
+        });
+    }
+
+    const novoCandidato = {
+        id: Math.floor(Math.random() * 1000000),
+        nome,
+        partido,
+        idade,
+        segundo,
+        propostas,
+    };
+
+    candidatos.push(novoCandidato);
+    return res.status(201).send({
+        message: "Candidato cadastrado!",
+        novoCandidato,
+    });
+})
 
 candidatosRoutes.get("/:id", (req, res) => {
     const { id } = req.params;
